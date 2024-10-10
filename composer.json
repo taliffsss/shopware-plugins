@@ -1,0 +1,26 @@
+{
+  "name": "swag/minimal-offcanvas-plugin",
+  "description": "Minimal off-canvas with cross-selling for Shopware 6",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "MinimalOffcanvasPlugin\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "MinimalOffcanvasPlugin\\MinimalOffcanvasPlugin",
+    "label": {
+      "de-DE": "Minimal Offcanvas mit Cross-Selling",
+      "en-GB": "Minimal Offcanvas with Cross-Selling"
+    }
+  },
+  "require": {
+    "shopware/core": "^6.4"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/runtime": true
+    }
+  }
+}

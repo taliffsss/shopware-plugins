@@ -1,0 +1,49 @@
+{# src/Resources/views/storefront/component/checkout/offcanvas-cart-minimal.html.twig #}
+{% sw_extends '@Storefront/storefront/component/checkout/offcanvas-cart.html.twig' %}
+
+{% block page_checkout_aside_actions %}
+    {# Display only the last added item #}
+    {% set lastLineItem = page.cart.lineItems|last %}
+    {% if lastLineItem %}
+        <div class="cart-item">
+            {% block page_checkout_item_info %}
+                {% sw_include '@Storefront/storefront/component/line-item/line-item.html.twig' with {
+                    lineItem: lastLineItem,
+                    page: page,
+                    cart: page.cart
+                } only %}
+            {% endblock %}
+        </div>
+    {% endif %}
+
+    {# Display cross-selling products #}
+    {% if page.crossSellingProducts %}
+        <div class="cross-selling-products">
+            <h3>You might also like</h3>
+            {% for product in page.crossSellingProducts %}
+                <div class="cross-selling-item">
+                    <img src="{{ product.cover.media.url }}" alt="{{ product.name }}">
+                    <h4>{{ product.name }}</h4>
+                    <div class="price">{{ product.calculatedPrice.unitPrice|currency }}</div>
+                    <form action="{{ path('frontend.checkout.line-item.add') }}"
+                          method="post"
+                          class="buy-widget"
+                          data-add-to-cart="true">
+                        <input type="hidden" name="redirectTo" value="frontend.cart.offcanvas"/>
+                        <input type="hidden" name="lineItems[{{ product.id }}][id]" value="{{ product.id }}">
+                        <input type="hidden" name="lineItems[{{ product.id }}][type]" value="product">
+                        <input type="hidden" name="lineItems[{{ product.id }}][referencedId]" value="{{ product.id }}">
+                        <input type="hidden" name="lineItems[{{ product.id }}][stackable]" value="1">
+                        <input type="hidden" name="lineItems[{{ product.id }}][removable]" value="1">
+                        <input type="hidden" name="lineItems[{{ product.id }}][quantity]" value="1">
+                        <button class="btn btn-primary btn-buy" title="Add to cart">
+                            Add to cart
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
